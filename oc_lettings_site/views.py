@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.urls import reverse
-from profiles.models import Profile
 
 
 def index(request):
@@ -15,4 +13,4 @@ def index(request):
     Nullam elementum urna nisi, pellentesque iaculis enim cursus in.
     Praesent volutpat porttitor magna, non finibus neque cursus id.
     """
-    return render(request, reverse('oc_lettings_site:index.html'))
+    return render(request, 'oc_lettings_site/index.html')
