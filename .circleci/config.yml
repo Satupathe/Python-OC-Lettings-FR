@@ -47,23 +47,23 @@ jobs:
             docker build -t orange_lettings_oc/essai:lastest 
             docker push satupathe/orange_lettings_oc:latest
 
-
-
 workflows:
   build_tests:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - QA
-                - setup/pipeline_circleci
     jobs:
-      - tests
+      - tests:
+        filters:
+          branches:
+            only: 
+              - QA
+              - setup/pipeline_circleci
       - build_docker_push:
           requires:
             - tests
+          filters:
+            branches:
+              only: 
+                - QA
+                - setup/pipeline_circleci
           context:
             - build-env-vars
             - docker-hub-creds
