@@ -16,20 +16,19 @@ jobs:
       - checkout
       - run:
           name: "instal dependencies"
-          command: 
+          command: | 
             python -m venv venv
-            . venv/bin/activate
+            source venv/bin/activate
+            python -m pip install --upgrade pip
             pip install -r requirements.txt
       
       - run:
           name: "Run tests"
-          command:
-            pytest
+          command: pytest
             
       - run:
           name: "linting"
-          command:
-            flake8
+          command: flake8
   
   build_docker_push:
     docker:
@@ -51,11 +50,11 @@ workflows:
   build_tests:
     jobs:
       - tests:
-        filters:
-          branches:
-            only: 
-              - QA
-              - setup/pipeline_circleci
+          filters:
+            branches:
+              only: 
+                - QA
+                - setup/pipeline_circleci
       - build_docker_push:
           requires:
             - tests
