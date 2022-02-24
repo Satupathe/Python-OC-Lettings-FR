@@ -17,9 +17,9 @@ jobs:
       - run:
           name: "instal dependencies"
           command: | 
-            $python -m venv venv
-            $source venv/bin/activate
-            $pip install -r requirements.txt
+            python -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
       
       - run:
           name: "Run tests"
@@ -43,9 +43,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            - docker login
-            - docker build -t orange_lettings_oc/essai:lastest 
-            - docker push satupathe/orange_lettings_oc:latest
+            docker login
+            docker build -t orange_lettings_oc/essai:lastest 
+            docker push satupathe/orange_lettings_oc:latest
 
 workflows:
   build_tests:
