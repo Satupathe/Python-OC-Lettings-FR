@@ -24,11 +24,13 @@ jobs:
       
       - run:
           name: "Run tests"
-          command: pytest
+          command: | 
+            python -m pytest
             
       - run:
           name: "linting"
-          command: flake8
+          command: |
+            python -m flake8
   
   build_docker_push:
     docker:
