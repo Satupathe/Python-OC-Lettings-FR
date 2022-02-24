@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: "instal dependencies"
-          command: 
+          command: | 
             $python -m venv venv
             $source venv/bin/activate
             $pip install -r requirements.txt
