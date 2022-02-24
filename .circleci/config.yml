@@ -33,7 +33,7 @@ jobs:
   
   build_docker_push:
     docker:
-        - image: cimg/python:3.8
+        - image: cimg/docker:
           auth:
             username: satupathe
             password: $DOCKER_PASSWORD
@@ -43,10 +43,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-            docker build -t $CIRCLE_SHA1 .
-            docker tag $CIRCLE_SHA1 $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
-            docker push $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
+            docker login
+            docker build -t orange_lettings_oc/essai:lastest 
+            docker push satupathe/orange_lettings_oc:latest
 
 
 
@@ -59,9 +58,12 @@ workflows:
             branches:
               only:
                 - QA
-                - circleci-projet-setup
+                - setup/pipeline_circleci
     jobs:
       - tests
       - build_docker_push:
           requires:
             - tests
+          context:
+            - build-env-vars
+            - docker-hub-creds
