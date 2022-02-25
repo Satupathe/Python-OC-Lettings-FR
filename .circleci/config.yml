@@ -25,7 +25,7 @@ jobs:
       - run:
           name: "Run tests"
           command: | 
-            python manage.py test
+            python pytest
             
       - run:
           name: "linting"
