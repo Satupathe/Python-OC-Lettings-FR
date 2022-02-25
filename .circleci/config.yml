@@ -7,14 +7,14 @@ version: 2.1
 orbs:
   python: circleci/python@1.1.0
 jobs:
-  build:
+  tests:
     executor: python/default
     steps:
       - checkout
       - python/install-packages:
           pkg-manager: pip
       - python/install-packages:
-          pip-dependency-file: dev-requirements.txt
+          pip-dependency-file: requirements.txt
           pkg-manager: pip
       - python/install-packages:
           args: pytest
