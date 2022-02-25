@@ -35,22 +35,7 @@ jobs:
           command: |
             flake8
   
-  build_docker_push:
-    docker:
-        - image: cimg/python:3.8
-          auth:
-            username: satupathe
-            password: $DOCKER_PASSWORD
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build Docker image
-          command: |
-            docker login
-            docker build -t orange_lettings_oc/essai:lastest 
-            docker push satupathe/orange_lettings_oc:latest
-
+  
 workflows:
   build_tests:
     jobs:
@@ -60,14 +45,3 @@ workflows:
               only: 
                 - QA
                 - setup/pipeline_circleci
-      - build_docker_push:
-          requires:
-            - tests
-          filters:
-            branches:
-              only: 
-                - QA
-                - setup/pipeline_circleci
-          context:
-            - build-env-vars
-            - docker-hub-creds
