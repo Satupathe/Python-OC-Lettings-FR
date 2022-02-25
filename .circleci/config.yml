@@ -21,13 +21,12 @@ jobs:
             source venv/bin/activate
             python -m pip install --upgrade pip
             pip install -r requirements.txt
-            ls
-            source venv/bin/activate
+            pytest --version
       
       - run:
           name: "Run tests"
           command: | 
-            python pytest
+            pytest
             
       - run:
           name: "linting"
