@@ -4,32 +4,34 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  python: circleci/python@1.1.0
 jobs:
-  tests:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/python:3.8
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  build:
+    executor: python/default
     steps:
       - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: dev-requirements.txt
+          pkg-manager: pip
+      - python/install-packages:
+          args: pytest
+          pkg-manager: pip
+          pypi-cache: false
+      - python/install-packages:
+          args: flake8
+          pkg-manager: pip
+          pypi-cache: false
       - run:
-          name: "instal dependencies"
-          command: | 
-            python -m venv venv
-            source venv/bin/activate
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
+          command: |
             pytest --version
-      
-      - run:
-          name: "Run tests"
-          command: | 
             pytest
+          name: Test
             
       - run:
-          name: "linting"
+          name: linting
           command: |
             flake8
   
