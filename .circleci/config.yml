@@ -64,8 +64,6 @@ workflows:
       - build_docker_push:
           requires:
             - tests
-          context:
-            - Docker
           filters:
             branches:
               only: 
