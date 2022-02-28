@@ -71,6 +71,3 @@ workflows:
               only: 
                 - QA
                 - setup/pipeline_circleci
-          context:
-            - build-env-vars
-            - docker-hub-creds
