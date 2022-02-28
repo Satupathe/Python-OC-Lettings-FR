@@ -1,6 +1,5 @@
 from django.urls import reverse
 import pytest
-from django.contrib.auth.models import User
 
 from lettings.models import Letting, Address
 
@@ -11,6 +10,7 @@ def test_index_view_title(client):
     response = client.get(url)
     assert response.status_code == 200
     assert "<title>Lettings</title>" in str(response.content)
+
 
 @pytest.mark.django_db
 def test_letting_view_specific_title(client):
@@ -27,4 +27,3 @@ def test_letting_view_specific_title(client):
     response = client.get(url)
     assert response.status_code == 200
     assert "<title>Letting test</title>" in str(response.content)
-

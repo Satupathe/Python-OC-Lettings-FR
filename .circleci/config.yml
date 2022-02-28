@@ -4,37 +4,42 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  python: circleci/python@1.1.0
 jobs:
   tests:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/python:3.8
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    executor: python/default
     steps:
       - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: requirements.txt
+          pkg-manager: pip
+      - python/install-packages:
+          args: pytest
+          pkg-manager: pip
+          pypi-cache: false
+      - python/install-packages:
+          args: flake8
+          pkg-manager: pip
+          pypi-cache: false
       - run:
-          name: "instal dependencies"
-          command: | 
-            python -m venv venv
-            source venv/bin/activate
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-      
-      - run:
-          name: "Run tests"
-          command: pytest
+          command: |
+            pytest --version
+            pytest
+          name: Test
             
       - run:
-          name: "linting"
-          command: flake8
+          name: linting
+          command: |
+            flake8
   
   build_docker_push:
     docker:
         - image: cimg/python:3.8
           auth:
-            username: satupathe
+            username: $DOCKER_USERNAME
             password: $DOCKER_PASSWORD
     steps:
       - checkout
@@ -42,9 +47,10 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker login
-            docker build -t orange_lettings_oc/essai:lastest 
-            docker push satupathe/orange_lettings_oc:latest
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            docker build -t $CIRCLE_SHA1 .
+            docker tag $CIRCLE_SHA1 $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
+            docker push $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
 
 workflows:
   build_tests:
