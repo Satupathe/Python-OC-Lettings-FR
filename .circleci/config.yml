@@ -74,29 +74,19 @@ jobs:
 workflows:
   build_tests:
     jobs:
-      - tests:
-          filters:
-            branches:
-              only: 
-                - QA
-                - setup/pipeline_circleci
-                - feature/heroku_continuous_delivery
+      - tests
       - build_docker_push:
           requires:
             - tests
           filters:
             branches:
               only: 
-                - QA
-                - setup/pipeline_circleci
-                - feature/heroku_continuous_delivery
+                - master
       - deployment:
           requires:
             - build_docker_push
           filters:
             branches:
               only: 
-                - QA
-                - setup/pipeline_circleci
-                - feature/heroku_continuous_delivery
+                - master
 
