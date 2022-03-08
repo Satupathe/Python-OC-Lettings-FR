@@ -70,6 +70,7 @@ jobs:
               docker tag $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
               docker push registry.heroku.com/$HEROKU_APP_NAME/web
               heroku container:release --app=$HEROKU_APP_NAME web
+
 workflows:
   build_tests:
     jobs:
@@ -89,7 +90,6 @@ workflows:
                 - QA
                 - setup/pipeline_circleci
                 - feature/heroku_continuous_delivery
-
       - deployment:
           requires:
             - build_docker_push
