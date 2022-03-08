@@ -58,12 +58,18 @@ jobs:
       - checkout
       - run:
           name: Push to Heroku and deploy
-          command: |
+          command: |              
+              set -ex
               sudo curl https://cli-assets.heroku.com/install.sh | sh
-              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
-              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a oc-lettings-12 web
-              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a oc-lettings-12 web
-
+              echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+              heroku config:set DJANGO_ALLOWED_HOSTS=$HEROKU_APP_NAME.herokuapp.com --app $HEROKU_APP_NAME
+              heroku config:set SECRET_KEY=$HEROKU_SECRET_KEY --app $HEROKU_APP_NAME
+              heroku config:set DJANGO_DEBUG=0 --app $HEROKU_APP_NAME
+              echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+              docker pull $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
+              docker tag $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+              docker push registry.heroku.com/$HEROKU_APP_NAME/web
+              heroku container:release --app=$HEROKU_APP_NAME web
 workflows:
   build_tests:
     jobs:
