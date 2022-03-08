@@ -51,6 +51,18 @@ jobs:
             docker build -t $CIRCLE_SHA1 .
             docker tag $CIRCLE_SHA1 $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
             docker push $DOCKER_USERNAME/$DOCKER_REPOSITORY:$CIRCLE_SHA1
+  
+  deployment:
+    machine:True
+    steps:
+      - checkout
+      - run:
+          name: Push to Heroku and deploy
+          command: |
+              curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a python-django-starter web
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a python-django-starter web
 
 workflows:
   build_tests:
@@ -61,6 +73,7 @@ workflows:
               only: 
                 - QA
                 - setup/pipeline_circleci
+                - feature/heroku_continuous_delivery
       - build_docker_push:
           requires:
             - tests
@@ -69,3 +82,4 @@ workflows:
               only: 
                 - QA
                 - setup/pipeline_circleci
+                - feature/heroku_continuous_delivery
