@@ -76,6 +76,7 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
 
+
 ## Déploiement de l'application
 
 ### Fonctionnement général du déploiement
@@ -107,6 +108,7 @@ Si la construction de l'image Docker est réussie, le déploiement est amorcé:
     4. Nom de l'application Heroku
 - Un compte DockerHub et un dépôt distant pour le projet
 - Un compte Heroku et un dépôt distant pour le projet
+- Un compte Sentry
 
 ### Etapes nécessaires
 - Créer un nouveau projet sur GitHub
@@ -116,6 +118,8 @@ Si la construction de l'image Docker est réussie, le déploiement est amorcé:
 - Créer une nouvelle application sur Heroku
 - Ajouter Heroku-Postgres dans les add-ons
 - Créer un nouveau dépôt sur DockerHub
+- Créer un nouveau projet Sentry 
+- Ajouter le lien du projet fournit par Sentry en bas de Settings.py dans sentry_sdk.init(dsn =... 
 - Adapter le fichier config.yml du dossier circleci
 - Pousser les modifications à partir de la branche master
 
