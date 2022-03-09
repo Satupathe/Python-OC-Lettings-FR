@@ -123,7 +123,6 @@ Si la construction de l'image Docker est réussie, le déploiement est amorcé:
 - Adapter le fichier config.yml du dossier circleci
 - Pousser les modifications à partir de la branche master
 
-
 ## Accès à l'application
 
 ### Via Docker
