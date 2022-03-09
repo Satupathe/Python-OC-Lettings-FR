@@ -75,3 +75,57 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+## Déploiement de l'application
+
+### Fonctionnement général du déploiement
+Lorsque de nouvelles modifications sont poussées vers le Dépôt GitHub, le pipeline s'active pour lancer les tests via la commande pytest. Il y a vérification aussi des conventions d'écriture PEP8 avec FLake8.
+Ces tests concernent l'ensemble des branches.
+
+Lorsque les changements sont effectués et poussés à partir de la branche master, la seconde partie du pipeline s'engage en complément:
+Si l'ensemble des tests est validé la construction de l'image Docker démarre:
+  - Login au dépôt DockerHub
+  - Contruction de l'image Docker de l'application et ajout d'un tag
+  - Publication de l'image sur le DockerHub
+
+Si la construction de l'image Docker est réussie, le déploiement est amorcé:
+  - Installation de Heroku CLI
+  - Mise en place du lien entre Docker et Heroku
+  - Création des variables d'environnement
+  - Connection de Heroku au DockerHub
+  - Récupération de l'image et publication sur Heroku
+  - Déploiement de l'image
+
+### Configuration
+- Un compte Github
+- Un compte CircleCI
+- Variables d'environnement du projet sur CircleCI:
+    1. Clé API Heroku
+    2. Nom du dépôt dockerHub
+    2. Login DockerHub
+    3. Mot de passe Dockerhub, clé secrete Django)
+    4. Nom de l'application Heroku
+- Un compte DockerHub et un dépôt distant pour le projet
+- Un compte Heroku et un dépôt distant pour le projet
+
+### Etapes nécessaires
+- Créer un nouveau projet sur GitHub
+- Récupérer les fichiers du projet
+- Lier le compte CircleCI et le compte GitHub
+- Ajouter les variables d'environnement dans le projet sur CircleCI
+- Créer une nouvelle application sur Heroku
+- Ajouter Heroku-Postgres dans les add-ons
+- Créer un nouveau dépôt sur DockerHub
+- Adapter le fichier config.yml du dossier circleci
+- Pousser les modifications à partir de la branche master
+
+
+## Accès à l'application
+
+### Via Docker
+ - Ouvrir le terminal de commande
+ - Taper la commande `docker run -p 8000:8000 satupathe/orange_lettings_oc`
+ - Entrer l'adresse suivante dans votre navigateur : 127.0.0.1:8000
+
+### Avec Heroku
+  https://oc-lettings-100.herokuapp.com/ 
