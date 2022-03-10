@@ -127,8 +127,10 @@ Si la construction de l'image Docker est réussie, le déploiement est amorcé:
 
 ### Via Docker
  - Ouvrir le terminal de commande
- - Taper la commande `docker run -p 8000:8000 satupathe/orange_lettings_oc`
- - Entrer l'adresse suivante dans votre navigateur : 127.0.0.1:8000
+ - Aller sur DockerHub et récupérer le tag de la dernière image poussée vers le dépôt distant.
+ - Copier le nom de l'image
+ - Taper la commande dans le terminal: `docker run -p 8000:8000 satupathe/orange_lettings_oc:270a7a61966940e58cce7db12170a527a4fec0d7` le numéro après les : dépends de la version de l'image précédemment copiée
+ - Entrer l'adresse suivante dans le navigateur : 127.0.0.1:8000
 
 ### Avec Heroku
   https://oc-lettings-100.herokuapp.com/ 
