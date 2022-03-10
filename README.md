@@ -129,7 +129,7 @@ Si la construction de l'image Docker est réussie, le déploiement est amorcé:
  - Ouvrir le terminal de commande
  - Aller sur DockerHub et récupérer le tag de la dernière image poussée vers le dépôt distant.
  - Copier le nom de l'image
- - Taper la commande dans le terminal: `docker run -p 8000:8000 satupathe/orange_lettings_oc:270a7a61966940e58cce7db12170a527a4fec0d7` le numéro après les : dépends de la version de l'image précédemment copiée
+ - Taper la commande dans le terminal: `docker run -d -p 8080:8080 satupathe/orange_lettings_oc:270a7a61966940e58cce7db12170a527a4fec0d7` le numéro après les : dépends de la version de l'image précédemment copiée
  - Entrer l'adresse suivante dans le navigateur : 127.0.0.1:8000
 
 ### Avec Heroku
